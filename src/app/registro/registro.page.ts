@@ -5,7 +5,7 @@ import {
   Validators,
   FormBuilder
 } from '@angular/forms';
-import { AlertController } from '@ionic/angular';
+import { AlertController ,NavController} from '@ionic/angular';
 
 @Component({
   selector: 'app-registro',
@@ -19,7 +19,8 @@ export class RegistroPage implements OnInit {
   formularioRegistro: FormGroup;
   
   constructor(public fb: FormBuilder,
-    public alertController: AlertController) {
+    public alertController: AlertController,
+    public navCtrl: NavController) {
     this.formularioRegistro = this.fb.group({
       'nombre': new FormControl("", Validators.required),
       'password': new FormControl("", Validators.required),
@@ -50,6 +51,20 @@ export class RegistroPage implements OnInit {
     }
 
     localStorage.setItem('usuario',JSON.stringify(usuario));
+    const confirmAlert = await this.alertController.create({
+      header: 'Registro exitoso',
+      message: 'Los datos se han guardado correctamente.',
+      buttons: [
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.navCtrl.navigateForward(['/login']);
+          }
+        }
+      ]
+    });
+  
+    await confirmAlert.present();
   }
-
+  
 }

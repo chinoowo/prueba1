@@ -23,6 +23,7 @@ export class CambioCredencialesPage implements OnInit {
     public navCtrl: NavController) {
     this.formularioCambioClave = this.fb.group({
       'nombre': new FormControl("", Validators.required),
+      'rut': new FormControl("", Validators.required),
       'password': new FormControl("", Validators.required),
       'confirmacionPassword': new FormControl("", Validators.required)
     });
@@ -47,6 +48,7 @@ export class CambioCredencialesPage implements OnInit {
 
     var usuario = {
       nombre: f.nombre,
+      rut: f.rut,
       password: f.password
     }
 

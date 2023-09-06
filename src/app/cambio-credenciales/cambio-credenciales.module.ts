@@ -4,9 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { IngresadoPageRoutingModule } from './ingresado-routing.module';
+import { CambioCredencialesPageRoutingModule } from './cambio-credenciales-routing.module';
 
-import { IngresadoPage } from './ingresado.page';
+import { CambioCredencialesPage } from './cambio-credenciales.page';
 
 @NgModule({
   imports: [
@@ -14,8 +14,8 @@ import { IngresadoPage } from './ingresado.page';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    IngresadoPageRoutingModule
+    CambioCredencialesPageRoutingModule
   ],
-  declarations: [IngresadoPage]
+  declarations: [CambioCredencialesPage]
 })
-export class IngresadoPageModule {}
+export class CambioCredencialesPageModule {}

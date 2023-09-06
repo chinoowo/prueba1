@@ -19,6 +19,10 @@ const routes: Routes = [
     path: 'ingresado',
     loadChildren: () => import('./ingresado/ingresado.module').then( m => m.IngresadoPageModule)
   },
+  {
+    path: 'cambio-credenciales',
+    loadChildren: () => import('./cambio-credenciales/cambio-credenciales.module').then( m => m.CambioCredencialesPageModule)
+  },
 ];
 
 @NgModule({

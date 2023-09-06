@@ -3,7 +3,17 @@
     <ion-buttons slot="start">
       <ion-back-button [routerLink]="['/login']" default-href="#"></ion-back-button>
     </ion-buttons>
-    <ion-title>Ingresado</ion-title>
+    <ion-title>Bienvenido</ion-title>
   </ion-toolbar>
 </ion-header>
 
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-content>
+      <div class="user-info">
+        <ion-label class="info-label">Nombre de Usuario:</ion-label>
+        <ion-label class="info-value">{{ nombre }}</ion-label>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

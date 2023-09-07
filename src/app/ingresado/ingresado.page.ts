@@ -8,6 +8,8 @@ import { NavController } from '@ionic/angular';
 })
 export class IngresadoPage implements OnInit {
   nombre: string = ''; // Inicializa la variable con un valor por defecto
+  rut : string = '';
+  carrera : string ='';
 
   constructor(private navCtrl: NavController) { }
 
@@ -19,6 +21,18 @@ export class IngresadoPage implements OnInit {
       const usuario = JSON.parse(usuarioJSON);
       this.nombre = usuario.nombre; // Asigna el nombre a la variable
     }
+
+    if (usuarioJSON) {
+      const usuario = JSON.parse(usuarioJSON);
+      this.rut = usuario.rut; // Asigna el nombre a la variable
+    }
+
+    if (usuarioJSON) {
+      const usuario = JSON.parse(usuarioJSON);
+      this.carrera = usuario.carrera; // Asigna el nombre a la variable
+    }
+    
+
   }
 
   volverARegistro() {

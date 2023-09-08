@@ -7,6 +7,15 @@
   </ion-toolbar>
 </ion-header>
 
+<!-- <ion-content>
+  <ion-button class="ion-text-center" (click)="scan()">Escanear Codigo</ion-button>
+  <ion-card>
+    <ion-card-content class="ion-text-center">
+      {{code}}
+    </ion-card-content>
+  </ion-card>
+</ion-content> -->
+
 <ion-content class="ion-padding">
   <ion-card>
     <ion-card-content>
@@ -22,6 +31,11 @@
         <ion-label class="info-label">Carrera:</ion-label>
         <ion-label class="info-value">{{ carrera }}</ion-label>
       </div>
+      <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+        <ion-fab-button (click)="scan()">
+          <ion-icon name="scan"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
     </ion-card-content>
   </ion-card>
 </ion-content>

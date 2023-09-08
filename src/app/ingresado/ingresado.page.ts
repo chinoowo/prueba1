@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 
 @Component({
   selector: 'app-ingresado',
@@ -8,10 +9,11 @@ import { NavController } from '@ionic/angular';
 })
 export class IngresadoPage implements OnInit {
   nombre: string = ''; // Inicializa la variable con un valor por defecto
-  rut : string = '';
-  carrera : string ='';
+  rut: string = '';
+  carrera: string = '';
+  code:any;
 
-  constructor(private navCtrl: NavController) { }
+  constructor(private navCtrl: NavController, private barcodeScanner: BarcodeScanner) { }
 
   ionViewWillEnter() {
     // En el evento ionViewWillEnter, obtén el nombre de usuario actualizado del localStorage
@@ -31,7 +33,7 @@ export class IngresadoPage implements OnInit {
       const usuario = JSON.parse(usuarioJSON);
       this.carrera = usuario.carrera; // Asigna el nombre a la variable
     }
-    
+
 
   }
 
@@ -41,5 +43,14 @@ export class IngresadoPage implements OnInit {
 
   ngOnInit() {
     // Mantén el código existente aquí si hay alguna otra lógica de inicialización
+  }
+
+  scan() {
+    this.barcodeScanner.scan().then(barcodeData => {
+      this.code=barcodeData.text;
+      console.log('Barcode data', barcodeData);
+    }).catch(err => {
+      console.log('Error', err);
+    });
   }
 }

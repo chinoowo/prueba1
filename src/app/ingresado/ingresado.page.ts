@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
+import { AlertController } from '@ionic/angular';
+
 
 
 @Component({
@@ -11,9 +14,10 @@ export class IngresadoPage implements OnInit {
   nombre: string = ''; // Inicializa la variable con un valor por defecto
   rut: string = '';
   carrera: string = '';
-  code:any;
+  isSupported = false;
+  barcodes: Barcode[] = [];
 
-  constructor(private navCtrl: NavController) { }
+  constructor(private navCtrl: NavController,private alertController: AlertController) { }
 
   ionViewWillEnter() {
     // En el evento ionViewWillEnter, obtén el nombre de usuario actualizado del localStorage
@@ -42,8 +46,30 @@ export class IngresadoPage implements OnInit {
   }
 
   ngOnInit() {
-    // Mantén el código existente aquí si hay alguna otra lógica de inicialización
+    BarcodeScanner.isSupported().then((result) => {
+      this.isSupported = result.supported;
+    });
   }
-
+  async scan(): Promise<void> {
+    const granted = await this.requestPermissions();
+    if (!granted) {
+      this.presentAlert();
+      return;
+    }
+    const { barcodes } = await BarcodeScanner.scan();
+    this.barcodes.push(...barcodes);
+  }
+  async requestPermissions(): Promise<boolean> {
+    const { camera } = await BarcodeScanner.requestPermissions();
+    return camera === 'granted' || camera === 'limited';
+  }
+  async presentAlert(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Permiso denegado',
+      message: 'Por favor, conceda permiso a la cámara para utilizar el escáner de código de barras',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
 
 }

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { BarcodeScanner } from 'capacitor-barcode-scanner';
 import { AlertController } from '@ionic/angular';
-
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
 
 
 @Component({
@@ -15,6 +16,7 @@ export class IngresadoPage implements OnInit {
   rut: string = '';
   carrera: string = '';
   isSupported = false;
+  imagenes:any[]=[];
 
 
   constructor(private navCtrl: NavController,private alertController: AlertController) { }
@@ -55,7 +57,36 @@ async scan(){
   }
 
   ngOnInit() {
+    defineCustomElements(window)
+  }
 
+  async takePhoto(){
+
+    var cSource = CameraSource.Prompt;
+
+    if ((await Camera.checkPermissions()).camera == 'granted'){
+      const image = await Camera.getPhoto({
+        resultType:CameraResultType.Uri,
+        quality:100,
+        height:1024,
+        width:1024,
+        source:cSource,
+        presentationStyle:'popover',
+        promptLabelCancel:'Cancelar',
+        promptLabelHeader:'Seleccione',
+        promptLabelPhoto:'Desde la galeria',
+        promptLabelPicture:'Desde la camara'
+      });
+
+      if (image.webPath){
+        var blob = (await fetch(image.webPath)).blob();
+        this.imagenes.unshift({fname:'foto.'+image.format, src:image.webPath, file:blob})
+      }
+
+      console.log("Imagenes guardadas ===>", this.imagenes);
+      
+
+    }
   }
   
 

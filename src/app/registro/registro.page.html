@@ -34,10 +34,27 @@
           <ion-label position="floating">Confirmar contraseña</ion-label>
           <ion-input formControlName="confirmacionPassword" type="password"></ion-input>
         </ion-item>
+        <ion-card>
+          
+        </ion-card>
         <br>
         <ion-button (click)="guardar()">Registrarse
         </ion-button>
       </form>
     </ion-card-content>
   </ion-card>
+
+  <ion-item>
+    <ion-select (ionChange)="cargarComuna()" [(ngModel)]="regionSel" label="Region" placeholder="Seleccione">
+      <ion-select-option *ngFor="let i of regiones" [value]="i.id">{{i.nombre}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-select [disabled]="seleccionComuna" [(ngModel)]="regionSel" label="Comuna" placeholder="Seleccione">
+      <ion-select-option *ngFor="let i of comunas" [value]="i.id">{{i.nombre}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  
+
+
 </ion-content>

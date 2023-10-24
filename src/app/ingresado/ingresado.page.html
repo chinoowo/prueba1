@@ -37,6 +37,24 @@
     <ion-img [src]="i.src"></ion-img>
   </ion-card>
 
+  <ion-button (click)="printCurrentPosition()">Obtener Ubicación</ion-button>
+
+
+
+  <ion-card>
+    <ion-card-content>
+      <ion-label class="info-label">Latitud:</ion-label>
+      <ion-label class="info-value">{{ latitude }}</ion-label>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-label class="info-label">Longitud:</ion-label>
+      <ion-label class="info-value">{{ longitude }}</ion-label>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>
 
 

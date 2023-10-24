@@ -4,7 +4,7 @@ import { BarcodeScanner } from 'capacitor-barcode-scanner';
 import { AlertController } from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
-
+import { Geolocation } from '@capacitor/geolocation';
 
 @Component({
   selector: 'app-ingresado',
@@ -17,9 +17,35 @@ export class IngresadoPage implements OnInit {
   carrera: string = '';
   isSupported = false;
   imagenes:any[]=[];
+  latitude: number; // Declara la propiedad latitude
+  longitude: number; // Declara la propiedad longitude
 
 
-  constructor(private navCtrl: NavController,private alertController: AlertController) { }
+  constructor(private navCtrl: NavController,private alertController: AlertController) { 
+    this.latitude = 0; // Inicializa latitude con un valor por defecto
+    this.longitude = 0; // Inicializa longitude con un valor por defecto
+  }
+
+
+
+  async printCurrentPosition() {
+    try {
+      const coordinates = await Geolocation.getCurrentPosition();
+      const latitude = coordinates.coords.latitude;
+      const longitude = coordinates.coords.longitude;
+      console.log('Latitude:', latitude);
+      console.log('Longitude:', longitude);
+  
+      // Aquí puedes hacer lo que desees con las coordenadas, como mostrarlas en la interfaz de usuario
+      // Por ejemplo, puedes asignarlas a variables en tu clase y mostrarlas en la interfaz.
+  
+      this.latitude = latitude;
+      this.longitude = longitude;
+  
+    } catch (error) {
+      console.error('Error obteniendo la ubicación:', error);
+    }
+  }
 
 
 async scan(){
@@ -28,7 +54,6 @@ async scan(){
   
 
 }
-
 
   ionViewWillEnter() {
     // En el evento ionViewWillEnter, obtén el nombre de usuario actualizado del localStorage

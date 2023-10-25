@@ -7,54 +7,33 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Registro</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <form [formGroup]="formularioRegistro">
-        <ion-item>
-          <ion-label position="floating">Nombre</ion-label>
-          <ion-input formControlName="nombre"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Rut</ion-label>
-          <ion-input formControlName="rut"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Carrera</ion-label>
-          <ion-input formControlName="carrera"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Contraseña</ion-label>
-          <ion-input formControlName="password" type="password"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Confirmar contraseña</ion-label>
-          <ion-input formControlName="confirmacionPassword" type="password"></ion-input>
-        </ion-item>
-        <ion-card>
-          
-        </ion-card>
-        <br>
-        <ion-button (click)="guardar()">Registrarse
-        </ion-button>
-      </form>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-item>
-    <ion-select (ionChange)="cargarComuna()" [(ngModel)]="regionSel" label="Region" placeholder="Seleccione">
-      <ion-select-option *ngFor="let i of regiones" [value]="i.id">{{i.nombre}}</ion-select-option>
-    </ion-select>
-  </ion-item>
-  <ion-item>
-    <ion-select [disabled]="seleccionComuna" [(ngModel)]="regionSel" label="Comuna" placeholder="Seleccione">
-      <ion-select-option *ngFor="let i of comunas" [value]="i.id">{{i.nombre}}</ion-select-option>
-    </ion-select>
-  </ion-item>
+<ion-content [fullscreen]="true">
   
 
-
-</ion-content>
+  <ion-content [fullscreen]="true">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Registro</ion-card-title>
+        <ion-card-subtitle></ion-card-subtitle>
+      </ion-card-header>
+    <div class="container">  <ion-card-content>
+      <ion-input [(ngModel)]="usuario" label="Usuario: "></ion-input>
+      <ion-input [(ngModel)]="contrasena" type="password" label="Contraseña: "></ion-input>
+      <ion-input [(ngModel)]="rut" label="Rut: "></ion-input>
+      <ion-input [(ngModel)]="carrera" Label="Carrera:"></ion-input>
+      <ion-item>
+        <ion-select (ionChange)="cargarComuna()" [(ngModel)]="regionSel"  label="Region" placeholder="Seleccione">
+          <ion-select-option *ngFor="let i of regiones" [value]="i.id">{{i.nombre}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-select [disabled]="seleccionComuna" [(ngModel)]="regionSel"  label="Comuna" placeholder="Seleccione">
+          <ion-select-option *ngFor="let i of comunas" [value]="i.id">{{i.nombre}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-button (click)="registro()" color="tertiary"  shape="round"><ion-icon slot="start" name="skull"></ion-icon> Registro </ion-button>
+  
+    </ion-card-content></div>
+  
+    </ion-card>
+  </ion-content>

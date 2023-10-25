@@ -9,6 +9,8 @@ import { AlertController ,NavController} from '@ionic/angular';
 import { LocationService } from 'src/app/services/location.service';
 import { Comuna } from '../models/comuna';
 import { Region } from '../models/region';
+import { HelperService } from 'src/app/services/helper.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-registro',
@@ -20,26 +22,24 @@ import { Region } from '../models/region';
 export class RegistroPage implements OnInit {
 
 
-
+  usuario:string='';
+  contrasena:string='';
+  rut:string= '';
+  carrera:string='';
   regiones:Region[]=[];
   comunas:Comuna[]=[];
   regionSel:number = 0;
   comunaSel:number = 0;
   seleccionComuna:boolean = true;
 
-  formularioRegistro: FormGroup;
   
   constructor(public fb: FormBuilder,
     public alertController: AlertController,
     public navCtrl: NavController,
-    private locationService:LocationService) {
-    this.formularioRegistro = this.fb.group({
-      'nombre': new FormControl("", Validators.required),
-      'carrera': new FormControl("",Validators.required),
-      'rut': new FormControl("", Validators.required),
-      'password': new FormControl("", Validators.required),
-      'confirmacionPassword': new FormControl("", Validators.required),
-    });
+    private locationService:LocationService,
+    private storage:StorageService,
+    private helper:HelperService) {
+    
   }
 
   ngOnInit() {
@@ -58,43 +58,43 @@ export class RegistroPage implements OnInit {
   }
 
 
-
-  async guardar(){
-    var f = this.formularioRegistro.value;
-
-    if(this.formularioRegistro.invalid){
-      const alert = await this.alertController.create({
-        header: 'Datos incompletos',
-        message: 'Tienes que llenar todos los datos',
-        buttons: ['Aceptar']
-      });
-  
-      await alert.present();
+  registro() {
+    if (this.usuario == '') {
+      this.helper.showAlert('Debe ingresar un usuario', 'Error');
       return;
     }
-
-    var usuario = {
-      nombre: f.nombre,
-      rut: f.rut,
-      carrera: f.carrera,
-      password: f.password
+    if (this.contrasena == '') {
+      this.helper.showAlert('Debe ingresar una contraseña', 'Error');
+      return;
     }
-
-    localStorage.setItem('usuario',JSON.stringify(usuario));
-    const confirmAlert = await this.alertController.create({
-      header: 'Registro exitoso',
-      message: 'Los datos se han guardado correctamente.',
-      buttons: [
-        {
-          text: 'Aceptar',
-          handler: () => {
-            this.navCtrl.navigateForward(['/login']);
-          }
-        }
-      ]
-    });
+    if (this.rut == '') {
+      this.helper.showAlert('Debe ingresar un rut', 'Error');
+      return;
+    }
+    if (this.comunaSel === 0) {
+      this.helper.showAlert('Debe seleccionar una comuna', 'Error');
+      return;
+    }
+    if (this.regionSel === 0) {
+      this.helper.showAlert('Debe seleccionar una región', 'Error');
+      return;
+    }
   
-    await confirmAlert.present();
+    var usuario = [{
+      correo: this.usuario,
+      contrasena: this.contrasena,
+      rut: this.rut,
+      comuna: this.comunaSel, // Asigna el valor seleccionado de la comuna
+      region: this.regionSel // Asigna el valor seleccionado de la región
+    }];
+
+    this.storage.guargarUsuario(usuario);
+    this.helper.showAlert("Usuario registrado correctamente.","Información");
+    
   }
+
+
+  
+  
   
 }

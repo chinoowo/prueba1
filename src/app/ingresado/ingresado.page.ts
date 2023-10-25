@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { BarcodeScanner } from 'capacitor-barcode-scanner';
+/* import { BarcodeScanner } from 'capacitor-barcode-scanner'; */
 import { AlertController } from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { Geolocation } from '@capacitor/geolocation';
+import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 
 @Component({
   selector: 'app-ingresado',
@@ -19,6 +20,7 @@ export class IngresadoPage implements OnInit {
   imagenes:any[]=[];
   latitude: number; // Declara la propiedad latitude
   longitude: number; // Declara la propiedad longitude
+  resultadoQrr:string='';
 
 
   constructor(private navCtrl: NavController,private alertController: AlertController) { 
@@ -49,8 +51,8 @@ export class IngresadoPage implements OnInit {
 
 
 async scan(){
-  const resultadoQr = (await BarcodeScanner.scan()).code;
-  alert("Codigo --->" + resultadoQr)
+  const resultadoQr =JSON.stringify(await BarcodeScanner.startScan());
+  this.resultadoQrr=resultadoQr;
   
 
 }

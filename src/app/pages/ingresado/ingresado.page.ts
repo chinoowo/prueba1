@@ -7,14 +7,15 @@ import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { Geolocation } from '@capacitor/geolocation';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { StorageService } from 'src/app/services/storage.service';
-
+import { ActivatedRoute } from '@angular/router';
+import { SharedService } from 'src/app/services/shared.service';
 @Component({
   selector: 'app-ingresado',
   templateUrl: './ingresado.page.html',
   styleUrls: ['./ingresado.page.scss'],
 })
 export class IngresadoPage implements OnInit {
-  nombre: string = ''; // Inicializa la variable con un valor por defecto
+  usuario: string = ''; // Inicializa la variable con un valor por defecto
   rut: string = '';
   carrera: string = '';
   isSupported = false;
@@ -25,9 +26,14 @@ export class IngresadoPage implements OnInit {
 
 
 
-  constructor(private navCtrl: NavController,private alertController: AlertController,private storageService: StorageService) { 
+  constructor(private navCtrl: NavController,private alertController: AlertController,private storageService: StorageService, private route: ActivatedRoute,private sharedService: SharedService) { 
     this.latitude = 0; // Inicializa latitude con un valor por defecto
     this.longitude = 0; // Inicializa longitude con un valor por defecto
+    this.route.queryParams.subscribe((params) => {
+      this.usuario = this.sharedService.getUsuario();
+      this.carrera = this.sharedService.getCarrera();
+      this.rut = this.sharedService.getRut();
+    });
   }
 
 
@@ -65,6 +71,7 @@ async scan(){
 
   ngOnInit() {
     defineCustomElements(window)
+    
   }
 
   async takePhoto(){
@@ -95,6 +102,7 @@ async scan(){
 
     }
   }
+  
   
 
 }

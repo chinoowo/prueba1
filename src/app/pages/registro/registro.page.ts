@@ -73,6 +73,10 @@ export class RegistroPage implements OnInit {
       this.helper.showAlert('Debe ingresar un rut', 'Error');
       return;
     }
+    if (this.carrera == '') {
+      this.helper.showAlert('Debe ingresar un carrera', 'Error');
+      return;
+    }
     if (this.regionSel ===0) {
       this.helper.showAlert('Debe seleccionar una región', 'Error');
       return;
@@ -85,6 +89,7 @@ export class RegistroPage implements OnInit {
     var usuario = [{
       usuario: this.usuario,
       contrasena: this.contrasena,
+      carrera: this.carrera,
       rut: this.rut,
       region: this.regionSel,
       comuna: this.comunaSel 

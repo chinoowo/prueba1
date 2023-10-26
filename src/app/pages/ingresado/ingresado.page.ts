@@ -6,6 +6,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { Geolocation } from '@capacitor/geolocation';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-ingresado',
@@ -23,7 +24,8 @@ export class IngresadoPage implements OnInit {
   resultadoQrr:string='';
 
 
-  constructor(private navCtrl: NavController,private alertController: AlertController) { 
+
+  constructor(private navCtrl: NavController,private alertController: AlertController,private storageService: StorageService) { 
     this.latitude = 0; // Inicializa latitude con un valor por defecto
     this.longitude = 0; // Inicializa longitude con un valor por defecto
   }
@@ -54,30 +56,8 @@ async scan(){
   const resultadoQr =JSON.stringify(await BarcodeScanner.startScan());
   this.resultadoQrr=resultadoQr;
   
-
 }
 
-  ionViewWillEnter() {
-    // En el evento ionViewWillEnter, obtén el nombre de usuario actualizado del localStorage
-    const usuarioJSON = localStorage.getItem('usuario');
-
-    if (usuarioJSON) {
-      const usuario = JSON.parse(usuarioJSON);
-      this.nombre = usuario.nombre; // Asigna el nombre a la variable
-    }
-
-    if (usuarioJSON) {
-      const usuario = JSON.parse(usuarioJSON);
-      this.rut = usuario.rut; // Asigna el nombre a la variable
-    }
-
-    if (usuarioJSON) {
-      const usuario = JSON.parse(usuarioJSON);
-      this.carrera = usuario.carrera; // Asigna el nombre a la variable
-    }
-
-
-  }
 
   volverARegistro() {
     this.navCtrl.navigateBack(['/registro']);

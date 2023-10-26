@@ -83,7 +83,7 @@ export class RegistroPage implements OnInit {
     }
     
     var usuario = [{
-      correo: this.usuario,
+      usuario: this.usuario,
       contrasena: this.contrasena,
       rut: this.rut,
       region: this.regionSel,

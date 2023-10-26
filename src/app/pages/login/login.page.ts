@@ -7,7 +7,8 @@ import {
   FormBuilder
 } from '@angular/forms';
 import { AlertController, NavController } from '@ionic/angular';
-
+import { HelperService } from 'src/app/services/helper.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-login',
@@ -16,16 +17,14 @@ import { AlertController, NavController } from '@ionic/angular';
 })
 export class LoginPage implements OnInit {
 
-  formularioLogin: FormGroup;
+  usuario:string='';
+  contrasena:string='';
 
-  constructor(public fb: FormBuilder,
-    public alertController: AlertController,
-    public navCtrl: NavController) { 
+  constructor(private storageService: StorageService,
+    private router: Router,
+    private helper: HelperService) { 
 
-    this.formularioLogin = this.fb.group({
-      'nombre': new FormControl("",Validators.required),
-      'password': new FormControl("",Validators.required)
-    })
+  
 
   }
 
@@ -33,24 +32,23 @@ export class LoginPage implements OnInit {
   }
   
 
-  async ingresar() {
-    var f = this.formularioLogin.value;
-    var usuarioString = localStorage.getItem('usuario');
-    if (usuarioString !== null) {
-      var usuario = JSON.parse(usuarioString);
-      if (usuario.nombre == f.nombre && usuario.password == f.password) {
-        console.log('Ingresado');
-        localStorage.setItem('ingresado', 'true');
-        this.navCtrl.navigateRoot('ingresado')
-      } else {
-        const alert = await this.alertController.create({
-          header: 'Datos incorrectos',
-          message: 'Tienes que llenar todos los datos',
-          buttons: ['Aceptar'],
-        });
-        await alert.present();
-      }
-    } 
+  async login() {
+    const usuario = this.usuario;
+    const contrasena = this.contrasena;
+
+    const usuariosAlmacenados = await this.storageService.obtenerUsuario();
+
+    // Verificar credenciales
+    const usuarioEncontrado = usuariosAlmacenados.find((user) => user.usuario === usuario && user.contrasena === contrasena);
+
+    if (usuarioEncontrado) {
+      // Autenticación exitosa
+      // Redirige al usuario a la página "ingresado"
+      this.router.navigate(['/ingresado']);
+    } else {
+      // Credenciales incorrectas
+      this.helper.showAlert('Credenciales incorrectas','Error');
+    }
   }
 
 }

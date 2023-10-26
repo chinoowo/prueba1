@@ -19,10 +19,12 @@
         <ion-label position="floating">Contraseña</ion-label>
         <ion-input type="password" [(ngModel)]="contrasena" name="contrasena" required></ion-input>
       </ion-item>
+      <a [routerLink]="['/cambio-credenciales']">Cambiar Credenciales</a> <!-- Enlace de texto a cambio-credenciales -->
       <br>
       <ion-button expand="full" (click)="login()">Iniciar Sesión</ion-button>
     </ion-card-content>
   </ion-card>
+  
 </ion-content>
 
 <ion-footer>

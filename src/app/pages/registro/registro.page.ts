@@ -33,7 +33,7 @@ export class RegistroPage implements OnInit {
   comunaSel:number = 0;
   seleccionComuna:boolean = true;
 
-  
+
   constructor(public fb: FormBuilder,
     public alertController: AlertController,
     public navCtrl: NavController,

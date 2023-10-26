@@ -23,6 +23,16 @@ const routes: Routes = [
     path: 'cambio-credenciales',
     loadChildren: () => import('./pages/cambio-credenciales/cambio-credenciales.module').then( m => m.CambioCredencialesPageModule)
   },
+  {
+    path: 'e404',
+    loadChildren: () => import('./pages/e404/e404.module').then( m => m.E404PageModule)
+  },
+  {
+    path: '**',
+    redirectTo: 'e404',
+    pathMatch: 'full'
+  }
+
 ];
 
 @NgModule({

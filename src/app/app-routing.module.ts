@@ -9,19 +9,19 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
     path: 'registro',
-    loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
+    loadChildren: () => import('./pages/registro/registro.module').then( m => m.RegistroPageModule)
   },
   {
     path: 'ingresado',
-    loadChildren: () => import('./ingresado/ingresado.module').then( m => m.IngresadoPageModule)
+    loadChildren: () => import('./pages/ingresado/ingresado.module').then( m => m.IngresadoPageModule)
   },
   {
     path: 'cambio-credenciales',
-    loadChildren: () => import('./cambio-credenciales/cambio-credenciales.module').then( m => m.CambioCredencialesPageModule)
+    loadChildren: () => import('./pages/cambio-credenciales/cambio-credenciales.module').then( m => m.CambioCredencialesPageModule)
   },
 ];
 

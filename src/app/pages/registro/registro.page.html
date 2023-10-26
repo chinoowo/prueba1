@@ -16,24 +16,31 @@
         <ion-card-title>Registro</ion-card-title>
         <ion-card-subtitle></ion-card-subtitle>
       </ion-card-header>
-    <div class="container">  <ion-card-content>
+    <div class="container">  
+      <ion-card-content>
       <ion-input [(ngModel)]="usuario" label="Usuario: "></ion-input>
+      <br>
       <ion-input [(ngModel)]="contrasena" type="password" label="Contraseña: "></ion-input>
+      <br>
       <ion-input [(ngModel)]="rut" label="Rut: "></ion-input>
+      <br>
       <ion-input [(ngModel)]="carrera" Label="Carrera:"></ion-input>
+      <br>
       <ion-item>
         <ion-select (ionChange)="cargarComuna()" [(ngModel)]="regionSel"  label="Region" placeholder="Seleccione">
           <ion-select-option *ngFor="let i of regiones" [value]="i.id">{{i.nombre}}</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-select [disabled]="seleccionComuna" [(ngModel)]="regionSel"  label="Comuna" placeholder="Seleccione">
+        <ion-select [disabled]="seleccionComuna" [(ngModel)]="comunaSel"  label="Comuna" placeholder="Seleccione">
           <ion-select-option *ngFor="let i of comunas" [value]="i.id">{{i.nombre}}</ion-select-option>
         </ion-select>
       </ion-item>
-      <ion-button (click)="registro()" color="tertiary"  shape="round"><ion-icon slot="start" name="skull"></ion-icon> Registro </ion-button>
-  
-    </ion-card-content></div>
-  
+      <br>
+        <ion-button (click)="registro()" color="tertiary" shape="round">
+        Registro
+        </ion-button>
+    </ion-card-content>
+    </div>
     </ion-card>
   </ion-content>

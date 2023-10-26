@@ -17,7 +17,7 @@ export class StorageService {
     return obj.value;
   }
 
-  async guargarUsuario(user:any[]){
+  async guardarUsuario(user:any[]){
     var userStorage = await this.obtenerUsuario();
 
     for (const i of userStorage) {

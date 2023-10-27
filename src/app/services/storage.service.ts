@@ -45,6 +45,34 @@ export class StorageService {
     }
   }
 
+  async actualizarUsuario(user: any) {
+    const userStorage = await this.obtenerUsuario();
+
+    let updatedUsers: any[] = [];
+
+    if (userStorage && userStorage.length > 0) {
+      // Actualiza la preferencia existente si el usuario ya está almacenado
+      const userIndex = userStorage.findIndex((u) => u.rut === user.rut);
+
+      if (userIndex !== -1) {
+        // Copia todos los campos del nuevo usuario en el usuario existente
+        userStorage[userIndex] = { ...userStorage[userIndex], ...user };
+        updatedUsers = userStorage;
+      } else {
+        // Agrega el nuevo usuario a las preferencias existentes
+        updatedUsers = [...userStorage, user];
+      }
+    } else {
+      // Si no hay preferencias existentes, crea un nuevo usuario
+      updatedUsers = [user];
+    }
+
+    this.setItem(storageUsuario, JSON.stringify(updatedUsers));
+  }
+
+
+}
+
 
   
-}
+

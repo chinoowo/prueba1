@@ -3,42 +3,44 @@
     <ion-buttons slot="start">
       <ion-back-button [routerLink]="['/login']" default-href="#"></ion-back-button>
     </ion-buttons>
-    <ion-title>Modificar credenciales</ion-title>
+    <ion-title>Actualizar credenciales</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Modificar credenciales</ion-card-title>
-    </ion-card-header>
-    <p>Debes ingresar todas tus credenciales para modificar alguna</p>
-    <ion-card-content>
-      <form [formGroup]="formularioCambioClave">
-        <ion-item>
-          <ion-label position="floating">Nombre</ion-label>
-          <ion-input formControlName="nombre"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Rut</ion-label>
-          <ion-input formControlName="rut"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Carrera</ion-label>
-          <ion-input formControlName="carrera"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Contraseña</ion-label>
-          <ion-input formControlName="password" type="password"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Confirmar contraseña</ion-label>
-          <ion-input formControlName="confirmacionPassword" type="password"></ion-input>
-        </ion-item>
-        <br>
-        <ion-button (click)="guardar()">Confirmar cambios
+<ion-content [fullscreen]="true">
+  
+
+  <ion-content [fullscreen]="true">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Actualizar credenciales</ion-card-title>
+        <ion-card-subtitle></ion-card-subtitle>
+      </ion-card-header>
+    <div class="container">  
+      <ion-card-content>
+      <ion-input [(ngModel)]="usuario" label="Usuario: "></ion-input>
+      <br>
+      <ion-input [(ngModel)]="contrasena" type="password" label="Contraseña: "></ion-input>
+      <br>
+      <ion-input [(ngModel)]="rut" label="Rut: "></ion-input>
+      <br>
+      <ion-input [(ngModel)]="carrera" Label="Carrera:"></ion-input>
+      <br>
+      <ion-item>
+        <ion-select (ionChange)="cargarComuna()" [(ngModel)]="regionSel"  label="Region" placeholder="Seleccione">
+          <ion-select-option *ngFor="let i of regiones" [value]="i.id">{{i.nombre}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-select [disabled]="seleccionComuna" [(ngModel)]="comunaSel"  label="Comuna" placeholder="Seleccione">
+          <ion-select-option *ngFor="let i of comunas" [value]="i.id">{{i.nombre}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <br>
+        <ion-button (click)="actualizarCredenciales()" color="tertiary" shape="round">
+        Actualizar
         </ion-button>
-      </form>
     </ion-card-content>
-  </ion-card>
-</ion-content>
+    </div>
+    </ion-card>
+  </ion-content>

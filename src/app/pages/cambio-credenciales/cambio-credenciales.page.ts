@@ -6,6 +6,12 @@ import {
   FormBuilder
 } from '@angular/forms';
 import { AlertController ,NavController} from '@ionic/angular';
+import { LocationService } from 'src/app/services/location.service';
+import { Comuna } from '../../models/comuna';
+import { Region } from '../../models/region';
+import { HelperService } from 'src/app/services/helper.service';
+import { StorageService } from 'src/app/services/storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cambio-credenciales',
@@ -16,61 +22,92 @@ import { AlertController ,NavController} from '@ionic/angular';
 
 export class CambioCredencialesPage implements OnInit {
 
-  formularioCambioClave: FormGroup;
-  
+
+  usuario:string='';
+  contrasena:string='';
+  rut:string= '';
+  carrera:string='';
+  regiones:Region[]=[];
+  comunas:Comuna[]=[];
+  regionSel:number = 0;
+  comunaSel:number = 0;
+  seleccionComuna:boolean = true;
+
+
   constructor(public fb: FormBuilder,
     public alertController: AlertController,
-    public navCtrl: NavController) {
-    this.formularioCambioClave = this.fb.group({
-      'nombre': new FormControl("", Validators.required),
-      'carrera': new FormControl("", Validators.required),
-      'rut': new FormControl("", Validators.required),
-      'password': new FormControl("", Validators.required),
-      'confirmacionPassword': new FormControl("", Validators.required)
-    });
+    public navCtrl: NavController,
+    private locationService:LocationService,
+    private storage:StorageService,
+    private router:Router,
+    private helper:HelperService) {
+    
   }
 
   ngOnInit() {
+    this.cargarRegion();
   }
 
-  async guardar(){
-    var f = this.formularioCambioClave.value;
+  async cargarRegion(){
+    const req = await this.locationService.getRegion();
+    this.regiones = req.data;
+  }
 
-    if(this.formularioCambioClave.invalid){
-      const alert = await this.alertController.create({
-        header: 'Datos incompletos',
-        message: 'Tienes que llenar todos los datos',
-        buttons: ['Aceptar']
-      });
-  
-      await alert.present();
+  async cargarComuna(){
+    this.seleccionComuna = false;
+    const req = await this.locationService.getComuna(this.regionSel);
+    this.comunas = req.data;
+  }
+
+
+  async actualizarCredenciales() {
+    if (this.usuario == '') {
+      this.helper.showAlert('Debe ingresar un usuario', 'Error');
       return;
     }
-
-    var usuario = {
-      nombre: f.nombre,
-      rut: f.rut,
-      carrera: f.carrera,
-      password: f.password
+    if (this.contrasena == '') {
+      this.helper.showAlert('Debe ingresar una contraseña', 'Error');
+      return;
     }
-
-    localStorage.setItem('usuario',JSON.stringify(usuario));
-    const confirmAlert = await this.alertController.create({
-      header: 'Registro exitoso',
-      message: 'Los datos se han guardado correctamente.',
-      buttons: [
-        {
-          text: 'Aceptar',
-          handler: () => {
-            this.navCtrl.navigateForward(['/login']);
-          }
-        }
-      ]
-    });
+    if (this.rut == '') {
+      this.helper.showAlert('Debe ingresar un rut', 'Error');
+      return;
+    }
+    if (this.carrera == '') {
+      this.helper.showAlert('Debe ingresar una carrera', 'Error');
+      return;
+    }
+    if (this.regionSel === 0) {
+      this.helper.showAlert('Debe seleccionar una región', 'Error');
+      return;
+    }
+    if (this.comunaSel === 0) {
+      this.helper.showAlert('Debe seleccionar una comuna', 'Error');
+      return;
+    }
   
-    await confirmAlert.present();
+    // Crea un objeto de usuario con los nuevos datos
+    const nuevoUsuario = {
+      usuario: this.usuario,
+      contrasena: this.contrasena,
+      carrera: this.carrera,
+      rut: this.rut,
+      region: this.regionSel,
+      comuna: this.comunaSel,
+    };
+  
+    // Llama al método para actualizar el usuario en lugar de guardarlo
+    this.storage.actualizarUsuario(nuevoUsuario)
+      .then(() => {
+        // Éxito: los datos del usuario se han actualizado correctamente
+        this.helper.showAlert('Credenciales actualizadas correctamente.', 'Información');
+  
+        this.router.navigate(['/login']);
+      })
+      .catch(error => {
+        // Error: muestra un mensaje de error en caso de problemas
+        this.helper.showAlert('Hubo un error al actualizar las credenciales', 'Error');
+      });
   }
-
-  
-
-}
+    
+  }

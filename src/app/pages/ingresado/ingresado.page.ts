@@ -74,32 +74,32 @@ async scan(){
     
   }
 
-  async takePhoto(){
-
+  async takePhoto() {
     var cSource = CameraSource.Prompt;
-
-    if ((await Camera.checkPermissions()).camera == 'granted'){
+  
+    if ((await Camera.checkPermissions()).camera == 'granted') {
       const image = await Camera.getPhoto({
-        resultType:CameraResultType.Uri,
-        quality:100,
-        height:1024,
-        width:1024,
-        source:cSource,
-        presentationStyle:'popover',
-        promptLabelCancel:'Cancelar',
-        promptLabelHeader:'Seleccione',
-        promptLabelPhoto:'Desde la galeria',
-        promptLabelPicture:'Desde la camara'
+        resultType: CameraResultType.Uri,
+        quality: 100,
+        height: 1024,
+        width: 1024,
+        source: cSource,
+        presentationStyle: 'popover',
+        promptLabelCancel: 'Cancelar',
+        promptLabelHeader: 'Seleccione',
+        promptLabelPhoto: 'Desde la galería',
+        promptLabelPicture: 'Desde la cámara',
       });
-
-      if (image.webPath){
+  
+      if (image.webPath) {
         var blob = (await fetch(image.webPath)).blob();
-        this.imagenes.unshift({fname:'foto.'+image.format, src:image.webPath, file:blob})
+        const nuevaImagen = { fname: 'foto.' + image.format, src: image.webPath, file: blob };
+  
+        // Borra la imagen anterior y muestra la nueva
+        this.imagenes.splice(0, 1, nuevaImagen);
+  
+        console.log("Imagen guardada ===>", nuevaImagen);
       }
-
-      console.log("Imagenes guardadas ===>", this.imagenes);
-      
-
     }
   }
   

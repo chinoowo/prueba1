@@ -86,28 +86,33 @@ export class CambioCredencialesPage implements OnInit {
       return;
     }
   
-    // Crea un objeto de usuario con los nuevos datos
-    const nuevoUsuario = {
-      usuario: this.usuario,
-      contrasena: this.contrasena,
-      carrera: this.carrera,
-      rut: this.rut,
-      region: this.regionSel,
-      comuna: this.comunaSel,
-    };
+    // Verifica si el "rut" ya existe en las preferencias
+    const userStorage = await this.storage.obtenerUsuario();
+    const usuarioExistente = userStorage.find((usuario) => usuario.rut === this.rut);
   
-    // Llama al método para actualizar el usuario en lugar de guardarlo
-    this.storage.actualizarUsuario(nuevoUsuario)
-      .then(() => {
-        // Éxito: los datos del usuario se han actualizado correctamente
-        this.helper.showAlert('Credenciales actualizadas correctamente.', 'Información');
+    if (usuarioExistente) {
+      // El "rut" existe, actualiza el usuario
+      const nuevoUsuario = {
+        usuario: this.usuario,
+        contrasena: this.contrasena,
+        carrera: this.carrera,
+        rut: this.rut,
+        region: this.regionSel,
+        comuna: this.comunaSel,
+      };
   
-        this.router.navigate(['/login']);
-      })
-      .catch(error => {
-        // Error: muestra un mensaje de error en caso de problemas
-        this.helper.showAlert('Hubo un error al actualizar las credenciales', 'Error');
-      });
+      this.storage.actualizarUsuario(nuevoUsuario)
+        .then(() => {
+          this.helper.showAlert('Credenciales actualizadas correctamente.', 'Información');
+          this.router.navigate(['/login']);
+        })
+        .catch(error => {
+          this.helper.showAlert('Hubo un error al actualizar las credenciales', 'Error');
+        });
+    } else {
+      // El "rut" no existe en las preferencias, muestra un mensaje
+      this.helper.showAlert('Usuario no encontrado. El rut no está registrado.', 'Error');
+    }
   }
     
   }
